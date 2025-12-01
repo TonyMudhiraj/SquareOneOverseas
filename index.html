@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Training Partner Registration & Center Checklist — AP SSDC</title>
+  <style>
+    :root{
+      --accent:#d43b6a;
+      --muted:#6b6b6b;
+      --muted-2:#9b9b9b;
+      --line:#d9d9d9;
+      --bg:#fff;
+      --input-text:#222;
+      --success:#1f8a3d;
+      --error:#c0392b;
+      --max-width:980px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Inter, Roboto, Arial, Helvetica, sans-serif;
+      background: #f7f7f9;
+      margin: 0;
+      padding: 30px;
+      color: #222;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      background: var(--bg);
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(20,20,20,0.06);
+    }
+
+    h1.page-title { font-size: 20px; margin: 0 0 8px; }
+    p.lead { color: var(--muted); margin: 0 0 20px; }
+
+    /* Section card */
+    .card { background: transparent; padding: 18px; border-radius: 8px; margin-bottom: 18px; }
+    .section-title { color: var(--accent); font-weight: 600; margin: 6px 0 14px; font-size: 16px; }
+
+    /* Form layout */
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; margin-bottom: 14px; }
+    .full { grid-column: 1 / -1; }
+
+    @media (max-width: 820px) { .row { grid-template-columns: 1fr; } }
+
+    label.field-label { display: block; font-size: 13px; color: #333; margin-bottom: 8px; }
+    label.field-label span.req { color: var(--accent); margin-left: 6px; font-weight: 700; }
+
+    .input-line {
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      padding: 8px 6px;
+      font-size: 14px;
+      color: var(--input-text);
+      background: transparent;
+      width: 100%;
+    }
+
+    .input-line::placeholder { color: #bdbdbd; }
+
+    select.input-line {
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #666 50%), linear-gradient(135deg, #666 50%, transparent 50%);
+      background-position: right 10px top 18px, right 5px top 18px;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      padding-right: 28px;
+    }
+
+    textarea.input-line { min-height: 110px; padding: 10px; border-radius: 3px; }
+
+    .radio-row { display: flex; gap: 14px; align-items: center; margin-bottom: 8px; }
+    .radio-item { display: flex; gap: 8px; align-items: center; color: #333; }
+
+    .file-btn { display: inline-block; padding: 8px 12px; border-radius: 6px; border: 1px solid #cfcfcf; background: #f2f2f2; color: #444; cursor: pointer; }
+    .file-info { margin-left: 12px; font-size: 13px; color: #777; }
+    .preview-thumb { margin-top: 10px; width: 100%; height: 160px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(0,0,0,0.06); display: none; }
+
+    .actions { display: flex; gap: 12px; margin-top: 14px; }
+    .btn { padding: 10px 14px; border-radius: 6px; border: none; cursor: pointer; }
+    .btn.primary { background: var(--accent); color: white; }
+    .btn.secondary { background: #fff; border: 1px solid #e1e1e1; color: #333; }
+    .btn.ghost { background: #fff; border: 1px solid #ddd; color: #333; }
+
+    .status { font-size: 14px; }
+    .status.success { color: var(--success); }
+    .status.error { color: var(--error); }
+
+    /* Checklist styles */
+    .check-box {
+      border: 2px solid #efefef;
+      background: var(--bg);
+      padding: 16px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+    }
+
+    .check-box h3 { margin: 0 0 8px; font-size: 15px; }
+    .check-box p.desc { margin: 0 0 12px; color: var(--muted-2); font-size: 13px; }
+
+    .upload-row { display: flex; align-items: center; gap: 12px; }
+    .help { font-size: 12px; color: #888; margin-top: 8px; }
+    .files-list { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .file-chip { background: #f4f4f6; padding: 6px 8px; border-radius: 6px; border: 1px solid #e7e7e7; font-size: 12px; }
+    .thumb { width: 84px; height: 56px; object-fit: cover; border: 1px solid #e6e6e6; border-radius: 6px; }
+
+    @media (max-width: 700px) {
+      .upload-row { flex-direction: column; align-items: flex-start; }
+      .thumb { width: 100%; height: auto; }
+    }
+
+    .note-inline { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="page-title">AP SSDC — Training Partner Registration & Center Checklist</h1>
+    <p class="lead">Fill the Training Partner details first, then add a Training Center and submit the checklist separately.</p>
+
+    <!-- ===== Training Partner Registration ===== -->
+    <div class="card" id="registrationCard">
+      <p class="section-title">Training Partner Registration</p>
+
+     <form id="regForm" action="https://formsubmit.co/el/cataka" method="POST" enctype="multipart/form-data">
+
+        <!-- Hidden metadata -->
+        <input type="hidden" name="access_key" value="a224f67f-8fe3-45f9-89f5-397ce1da4b3e" />
+        <input type="hidden" name="subject" value="New Training Partner Registration" />
+
+        <div class="row">
+          <div>
+            <label class="field-label">Training Partner Name <span class="req">*</span></label>
+            <input class="input-line" type="text" name="training_partner_name" placeholder="Enter" required />
+          </div>
+
+          <div>
+            <label class="field-label">Mobile Number <span class="req">*</span></label>
+            <input class="input-line" type="tel" inputmode="tel" name="mobile_number" placeholder="Enter" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="field-label">Email Id <span class="req">*</span></label>
+            <input class="input-line" type="email" name="email" placeholder="Enter" required />
+          </div>
+
+          <div>
+            <label class="field-label">Username <span class="req">*</span></label>
+            <input class="input-line" type="text" name="username" placeholder="Enter" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="field-label">Training Partner Type <span class="req">*</span></label>
+            <select class="input-line" name="training_partner_type" required>
+              <option value="">Select</option>
+              <option>Private</option>
+              <option>Government</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="field-label">District <span class="req">*</span></label>
+            <select class="input-line" name="district" required>
+              <option value="">Select</option>
+              <option>District 1</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div style="display:flex;flex-direction:column;">
+            <label class="field-label">ID Type & Value</label>
+            <div class="radio-row" style="margin-bottom:8px;">
+              <label class="radio-item"><input type="radio" name="id_type" value="TAN" checked /> <span>TAN</span></label>
+              <label class="radio-item"><input type="radio" name="id_type" value="PAN" /> <span>PAN</span></label>
+            </div>
+            <input class="input-line" type="text" name="tan_pan_value" value="ABCD1234FE" placeholder="TAN/PAN value" />
+          </div>
+          <div></div>
+        </div>
+
+        <!-- CENTER INFO -->
+        <p class="section-title" style="margin-top:8px;">Add Training Center</p>
+
+        <div class="row">
+          <div>
+            <label class="field-label">Training Center Name <span class="req">*</span></label>
+            <input class="input-line" type="text" name="center_name" placeholder="Enter" required />
+          </div>
+
+          <div>
+            <label class="field-label">Center Type <span class="req">*</span></label>
+            <select class="input-line" name="center_type" required>
+              <option value="">Select</option>
+              <option>Branch</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="field-label">Center Coordinator Name <span class="req">*</span></label>
+            <input class="input-line" type="text" name="coordinator_name" placeholder="Enter" required />
+          </div>
+
+          <div>
+            <label class="field-label">Mobile Number <span class="req">*</span></label>
+            <input class="input-line" type="tel" inputmode="tel" name="center_mobile" placeholder="Enter" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="field-label">Email Id <span class="req">*</span></label>
+            <input class="input-line" type="email" name="center_email" placeholder="Enter" required />
+          </div>
+
+          <div>
+            <label class="field-label">Username <span class="req">*</span></label>
+            <input class="input-line" type="text" name="center_username" placeholder="Enter" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="field-label">District <span class="req">*</span></label>
+            <select class="input-line" name="center_district" required>
+              <option value="">Select</option>
+            </select>
+          </div>
+          <div></div>
+        </div>
+
+        <div class="row">
+          <div class="full">
+            <label class="field-label">Address</label>
+            <textarea class="input-line" name="address" placeholder="Enter address" required></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="field-label">Upload Center Photo <span class="req">*</span></label>
+
+            <label class="file-btn" for="centerPhotoInput">Upload Center Photo</label>
+            <span class="file-info" id="centerUploadName">No file chosen</span>
+            <input type="file" id="centerPhotoInput" name="center_photo" style="display:none;" accept="image/*,video/*" />
+
+            <img id="centerPreviewImg" class="preview-thumb" alt="center image preview" />
+            <video id="centerPreviewVid" class="preview-thumb" controls></video>
+            <div class="note-inline">Accepted: images or small videos. Max recommended size 5MB (client-side check will warn on large files).</div>
+          </div>
+        </div>
+
+        <!-- <div class="actions">
+          <button class="btn primary" id="regSubmitBtn" type="submit">Submit Registration</button>
+          <button class="btn ghost" type="reset" id="regResetBtn">Reset</button>
+          <div style="margin-left:auto;">
+            <div id="regStatus" class="status"></div>
+          </div>
+        </div> -->
+      </form>
+    </div>
+
+    <!-- ===== Center Checklist ===== -->
+    <div class="card" id="checklistCard">
+      <p class="section-title">Center Checklist</p>
+
+      <p style="margin:0 0 10px;">Complete the checklist items below and upload the requested photos (max 3 files each, JPG/PNG, max 1MB each).</p>
+
+      
+       <form
+  action="https://formspree.io/f/movayzpn"
+  method="POST"
+>
+        <!-- FormSubmit hidden fields -->
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_subject" value="Training Center Checklist" />
+
+        <!-- 1 Office room -->
+        <div class="check-box" data-id="1">
+          <h3>1) Office room <span style="color:var(--accent);">*</span></h3>
+          <p class="desc">One office room per training center with sitting space to accommodate trainers during their office time.</p>
+          <input name="q1_text" class="input-line" placeholder="Enter" />
+          <div class="upload-row">
+            <label class="btn-upload" for="q1_files">Upload</label>
+            <input id="q1_files" name="q1_files" type="file" accept="image/jpeg,image/png" multiple style="display:none;" />
+            <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+          </div>
+          <div class="files-list" id="q1_preview"></div>
+        </div>
+
+        <!-- 2 Classroom -->
+        <div class="check-box" data-id="2">
+          <h3>2) Classroom</h3>
+          <p class="desc">The classroom shall have space to accommodate 30 candidates with minimum space of 10 sq.ft./per trainee.</p>
+          <input name="q2_text" class="input-line" placeholder="Enter" />
+          <div class="upload-row">
+            <label class="btn-upload" for="q2_files">Upload</label>
+            <input id="q2_files" name="q2_files" type="file" accept="image/jpeg,image/png" multiple style="display:none;" />
+            <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+          </div>
+          <div class="files-list" id="q2_preview"></div>
+        </div>
+
+        <!-- 3 Lab -->
+        <div class="check-box" data-id="3">
+          <h3>3) Lab</h3>
+          <p class="desc">The Lab shall have space to accommodate 30 candidates with minimum space of 10 sq.ft./per trainee.</p>
+          <input name="q3_text" class="input-line" placeholder="Enter" />
+          <div class="upload-row">
+            <label class="btn-upload" for="q3_files">Upload</label>
+            <input id="q3_files" name="q3_files" type="file" accept="image/jpeg,image/png" multiple style="display:none;" />
+            <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+          </div>
+          <div class="files-list" id="q3_preview"></div>
+        </div>
+
+        <!-- 4 Differently abled friendly -->
+        <div class="check-box" data-id="4">
+          <h3>4) Differently abled friendly training center</h3>
+          <p class="desc">The training center preferably have ramps, lifts and toilets for differently abled people.</p>
+          <input name="q4_text" class="input-line" placeholder="Enter" />
+          <div class="upload-row">
+            <label class="btn-upload" for="q4_files">Upload</label>
+            <input id="q4_files" name="q4_files" type="file" accept="image/jpeg,image/png" multiple style="display:none;" />
+            <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+          </div>
+          <div class="files-list" id="q4_preview"></div>
+        </div>
+
+        <!-- 5 Placement and Entrepreneurship cell -->
+        <div class="check-box" data-id="5">
+          <h3>5) Placement and Entrepreneurship cell</h3>
+          <p class="desc">A separate counselling/placement desk shall be available in the training center. An entrepreneurship cell shall be available in the training center.</p>
+          <input name="q5_text" class="input-line" placeholder="Enter" />
+          <div class="upload-row">
+            <label class="btn-upload" for="q5_files">Upload</label>
+            <input id="q5_files" name="q5_files" type="file" accept="image/jpeg,image/png" multiple style="display:none;" />
+            <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+          </div>
+          <div class="files-list" id="q5_preview"></div>
+        </div>
+
+        <!-- 6 Corridor -->
+        <div class="check-box" data-id="6">
+          <h3>6) Corridor</h3>
+          <p class="desc">No entry to or exit from academic area should be through another area.</p>
+          <input name="q6_text" class="input-line" placeholder="Enter" />
+          <div class="upload-row">
+            <label class="btn-upload" for="q6_files">Upload</label>
+            <input id="q6_files" name="q6_files" type="file" accept="image/jpeg,image/png" multiple style="display:none;" />
+            <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+          </div>
+          <div class="files-list" id="q6_preview"></div>
+        </div>
+
+        <!-- 7 Library -->
+        <div class="check-box" data-id="7">
+          <h3>7) Library</h3>
+          <p class="desc">Training center shall have library (physical &amp; digital) facilities for the benefit of trainees.</p>
+          <input name="q7_text" class="input-line" placeholder="Enter" />
+          <div class="upload-row">
+            <label class="btn-upload" for="q7_files">Upload</label>
+            <input id="q7_files" name="q7_files" type="file" accept="image/jpeg,image/png" multiple style="display:none;" />
+            <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+          </div>
+          <div class="files-list" id="q7_preview"></div>
+        </div>
+
+        <!-- 8 Toilets male -->
+        <div class="check-box" data-id="8">
+          <h3>8) Toilets for male</h3>
+          <p class="desc">Toilets for males and females should be segregated with the appropriate partition. Toilets shall also be disabled-friendly.</p>
+          <input name="q8_text" class="input-line" placeholder="Enter" />
+          <div class="upload-row">
+            <label class="btn-upload" for="q8_files">Upload</label>
+            <input id="q8_files" name="q8_files" type="file" accept="image/jpeg,image/png" multiple style="display:none;" />
+            <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+          </div>
+          <div class="files-list" id="q8_preview"></div>
+        </div>
+
+        <!-- 9 Toilets female -->
+        <div class="check-box" data-id="9">
+          <h3>9) Toilets for female</h3>
+          <p class="desc">Toilets for males and females should be segregated with the appropriate partition. Toilets shall also be disabled-friendly.</p>
+          <input name="q9_text" class="input-line" placeholder="Enter" />
+          <div class="upload-row">
+            <label class="btn-upload" for="q9_files">Upload</label>
+            <input id="q9_files" name="q9_files" type="file" accept="image/jpeg,image/png" multiple style="display:none;" />
+            <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+          </div>
+          <div class="files-list" id="q9_preview"></div>
+        </div>
+
+        <!-- 10 Distance -->
+        <div class="check-box" data-id="10">
+          <h3>10) Distance from nearest bus stop, railway station (in meters)</h3>
+          <p class="desc">It is advisable to be well connected to different transport locations. It is advisable that a dropping facility for persons with disabilities shall be provided from the transport locations.</p>
+          <input name="q10_text" class="input-line" placeholder="Enter" />
+          <div class="upload-row">
+            <label class="btn-upload" for="q10_files">Upload</label>
+            <input id="q10_files" name="q10_files" type="file" accept="image/jpeg,image/png" multiple style="display:none;" />
+            <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+          </div>
+          <div class="files-list" id="q10_preview"></div>
+        </div>
+
+        <!-- 11) Approach road to the center -->
+<div class="check-box" data-id="11">
+  <h3>11) Approach road to the center</h3>
+  <p class="desc">Safe and secured; the center should be located such that ordinary citizens use the approach roads regularly. It should be away from areas where anti-social elements move about.</p>
+  <input name="q11_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q11_files">Upload</label>
+    <input id="q11_files" name="q11_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q11_preview"></div>
+</div>
+
+<!-- 12) Securing of wires -->
+<div class="check-box" data-id="12">
+  <h3>12) Securing of wires</h3>
+  <p class="desc">In case of open wiring, all wires should be properly taped and secured with a PVC pipe on the top. It is advisable to have concealed wiring. The building should have 'Electricity safety Certificate' from competent authority.</p>
+  <input name="q12_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q12_files">Upload</label>
+    <input id="q12_files" name="q12_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q12_preview"></div>
+</div>
+
+<!-- 13) Biometric device -->
+<div class="check-box" data-id="13">
+  <h3>13) Biometric device</h3>
+  <p class="desc">Aadhar-Enabled Biometric Attendance System (AEBAS) shall be used as defined by Department of Telecommunications / GoI. Or the standard RFID/biometric system used in Andhra Pradesh may be used.</p>
+  <input name="q13_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q13_files">Upload</label>
+    <input id="q13_files" name="q13_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q13_preview"></div>
+</div>
+
+<!-- 14) Safe drinking water -->
+<div class="check-box" data-id="14">
+  <h3>14) Safe drinking water</h3>
+  <p class="desc">Standard: Any one of the following: 1) RO/ozonized treated water. 2) Packaged drinking water certified by ISI or BIS.</p>
+  <input name="q14_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q14_files">Upload</label>
+    <input id="q14_files" name="q14_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q14_preview"></div>
+</div>
+
+<!-- 15) First aid kit -->
+<div class="check-box" data-id="15">
+  <h3>15) First aid kit</h3>
+  <p class="desc">First aid kit shall have basic medication like antiseptic soap & lotion, band-aid, ice pouch, tissue pack, etc.</p>
+  <input name="q15_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q15_files">Upload</label>
+    <input id="q15_files" name="q15_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q15_preview"></div>
+</div>
+
+<!-- 16) Fire extinguishers -->
+<div class="check-box" data-id="16">
+  <h3>16) Fire extinguishers</h3>
+  <p class="desc">The training center shall have at least two fire extinguishers placed at easily accessible locations (e.g., corridors). The center should have valid 'Fire NOC' or certification from the local fire department.</p>
+  <input name="q16_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q16_files">Upload</label>
+    <input id="q16_files" name="q16_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q16_preview"></div>
+</div>
+
+<!-- 17) Protection of stairs, balconies and other locations -->
+<div class="check-box" data-id="17">
+  <h3>17) Protection of stairs, balconies and other locations</h3>
+  <p class="desc">All areas should be protected with railings or walls of at least 3 ft. height. If any area is not protected the center should not be commissioned.</p>
+  <input name="q17_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q17_files">Upload</label>
+    <input id="q17_files" name="q17_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q17_preview"></div>
+</div>
+
+<!-- 18) Contact details of important people -->
+<div class="check-box" data-id="18">
+  <h3>18) Contact details of important people</h3>
+  <p class="desc">The emergency contact details shall be displayed at the training center, which shall include: 1) center in-charge, 2) nearest police station, 3) fire station, and other required contacts.</p>
+  <input name="q18_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q18_files">Upload</label>
+    <input id="q18_files" name="q18_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q18_preview"></div>
+</div>
+
+<!-- 19) Electric power backup -->
+<div class="check-box" data-id="19">
+  <h3>19) Electric power backup</h3>
+  <p class="desc">Alternative power sources like generators, inverters, UPS or solar backups are allowed. Backup should support essential items: CCTV, biometric devices, office computers, domain lab equipment, etc.</p>
+  <input name="q19_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q19_files">Upload</label>
+    <input id="q19_files" name="q19_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q19_preview"></div>
+</div>
+
+<!-- 20) Internet Connection -->
+<div class="check-box" data-id="20">
+  <h3>20) Internet Connection</h3>
+  <p class="desc">The center should have at least two internet connections. If networked, the primary connection should be at least 20 Mbps for 10 computers on LAN. Non-networked computers should have 10 Mbps each.</p>
+  <input name="q20_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q20_files">Upload</label>
+    <input id="q20_files" name="q20_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q20_preview"></div>
+</div>
+
+<!-- 21) CCTV - Specification, location, recording, and storage -->
+<div class="check-box" data-id="21">
+  <h3>21) CCTV - Specification, location, recording, and storage</h3>
+  <p class="desc">CCTV systems should cover important academic and administrative areas. Recording and storage must be available at the training center per prescribed retention rules.</p>
+  <input name="q21_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q21_files">Upload</label>
+    <input id="q21_files" name="q21_files" type="file" accept="image/*" multiple style="display:none;" />
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q21_preview"></div>
+</div>
+
+<!-- 1) Area (in sq.m) -->
+<div class="check-box" data-id="22">
+  <h3>1) Area (in sq.m)</h3>
+  <p class="desc">
+    Area per student in all academic rooms is 10 Sq.ft. Combining of theory and domain lab is permitted only when both theory and practical 
+    classes are not taken at the same time for different batches. Seating arrangement must allow all students to see the trainer with an 
+    unobstructed view of the writing board and smart TV.
+  </p>
+  <input name="q22_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q22_files">Upload</label>
+    <input id="q22_files" name="q22_files" type="file" accept="image/*" multiple style="display:none;">
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q22_preview"></div>
+</div>
+
+<!-- 2) Tables/Chairs seating capacity -->
+<div class="check-box" data-id="23">
+  <h3>2) Tables/Chairs seating capacity (no of students)</h3>
+  <p class="desc">
+    Chair – one per candidate with writing pad. Tables and benches must have proper space, depth, and height based on average candidate size.
+  </p>
+  <input name="q23_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q23_files">Upload</label>
+    <input id="q23_files" name="q23_files" type="file" accept="image/*" multiple style="display:none;">
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q23_preview"></div>
+</div>
+
+<!-- 3) Fans -->
+<div class="check-box" data-id="24">
+  <h3>3) Fans (in number)</h3>
+  <p class="desc">
+    1 ceiling fan per each 150 Sq.ft or part thereof.  
+    Room size 450 Sq.ft but only 300 Sq.ft used → only 2 fans.  
+    Wall-mounted fans = double the ceiling fans.  
+    For AC rooms: 2-ton AC for 400 Sq.ft + 0.5 ton per 5 additional people.
+  </p>
+  <input name="q24_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q24_files">Upload</label>
+    <input id="q24_files" name="q24_files" type="file" accept="image/*" multiple style="display:none;">
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q24_preview"></div>
+</div>
+
+<!-- 4) Lights -->
+<div class="check-box" data-id="25">
+  <h3>4) Lights</h3>
+  <p class="desc">
+    1 fluorescent light (2,400 lumens) for each 150 Sq.ft or part thereof.
+  </p>
+  <input name="q25_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q25_files">Upload</label>
+    <input id="q25_files" name="q25_files" type="file" accept="image/*" multiple style="display:none;">
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q25_preview"></div>
+</div>
+
+<!-- 5) Lab (if applicable) -->
+<div class="check-box" data-id="26">
+  <h3>5) Lab (if applicable)</h3>
+  <p class="desc">
+    Lab equipment must comply with specifications defined by the respective Sector Skill Council, NCVET, or authorized body.
+  </p>
+  <input name="q26_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q26_files">Upload</label>
+    <input id="q26_files" name="q26_files" type="file" accept="image/*" multiple style="display:none;">
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q26_preview"></div>
+</div>
+
+<!-- 6) Trainers (if applicable) -->
+<div class="check-box" data-id="27">
+  <h3>6) Trainers (if applicable)</h3>
+  <p class="desc">
+    Trainer qualifications, experience, and certifications must meet NCVET / AB or approved competent authority standards.
+  </p>
+  <input name="q27_text" class="input-line" placeholder="Enter" />
+  <div class="upload-row">
+    <label class="btn-upload" for="q27_files">Upload</label>
+    <input id="q27_files" name="q27_files" type="file" accept="image/*" multiple style="display:none;">
+    <div class="help">File Type Allowed: JPG, JPEG, PNG | Max File Size: 1 MB | Max Number of Files: 3</div>
+  </div>
+  <div class="files-list" id="q27_preview"></div>
+</div>
+
+
+
+        <div style="margin-top:12px;display:flex;gap:12px;align-items:center;">
+          <button type="submit" class="btn primary" id="checklistSubmitBtn">Submit Checklist</button>
+          <button type="reset" class="btn ghost" id="checklistResetBtn">Reset</button>
+          <div id="checklistStatus" style="margin-left:12px;font-size:14px;color:#333;"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* Configuration */
+    const CHECKLIST_MAX_FILES = 3;
+    const CHECKLIST_MAX_SIZE = 1 * 1024 * 1024; // 1 MB
+    const CENTER_MAX_SIZE = 5 * 1024 * 1024; // 5 MB recommended for center photo/video
+
+    /* Helper: create preview chips and thumbnails */
+    function renderFilePreviewList(files, container) {
+      container.innerHTML = '';
+      if (!files || files.length === 0) return;
+
+      Array.from(files).forEach(file => {
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.flexDirection = 'column';
+        wrapper.style.gap = '6px';
+        wrapper.style.alignItems = 'flex-start';
+
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.className = 'thumb';
+          img.src = URL.createObjectURL(file);
+          img.alt = file.name;
+          wrapper.appendChild(img);
+        } else {
+          const chip = document.createElement('div');
+          chip.className = 'file-chip';
+          chip.textContent = file.name;
+          wrapper.appendChild(chip);
+        }
+
+        const meta = document.createElement('div');
+        meta.className = 'file-chip';
+        meta.textContent = `${file.name} (${Math.round(file.size/1024)} KB)`;
+        wrapper.appendChild(meta);
+
+        container.appendChild(wrapper);
+      });
+    }
+
+    /* Setup file controls for checklist items q1..q10 */
+    function setupChecklistFileControl(inputId, previewId) {
+      const input = document.getElementById(inputId);
+      const preview = document.getElementById(previewId);
+      if (!input || !preview) return;
+
+      input.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files || []);
+        if (files.length > CHECKLIST_MAX_FILES) {
+          alert(`Maximum ${CHECKLIST_MAX_FILES} files allowed`);
+          input.value = '';
+          preview.innerHTML = '';
+          return;
+        }
+
+        const invalid = files.find(f => !(f.type === 'image/jpeg' || f.type === 'image/png' || f.type === 'image/jpg'));
+        if (invalid) {
+          alert('Invalid file type detected. Only JPG/JPEG/PNG allowed.');
+          input.value = '';
+          preview.innerHTML = '';
+          return;
+        }
+
+        const tooLarge = files.find(f => f.size > CHECKLIST_MAX_SIZE);
+        if (tooLarge) {
+          alert('One or more selected files exceed 1 MB.');
+          // still render valid ones but skip large files
+        }
+
+        renderFilePreviewList(files.slice(0, CHECKLIST_MAX_FILES), preview);
+      });
+    }
+
+    for (let i = 1; i <= 10; i++) {
+      setupChecklistFileControl(`q${i}_files`, `q${i}_preview`);
+    }
+
+    /* Checklist form submit */
+    const checklistForm = document.getElementById('checklistForm');
+    const checklistStatus = document.getElementById('checklistStatus');
+    if (checklistForm) {
+      checklistForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        checklistStatus.textContent = 'Preparing checklist submission...';
+
+        const formData = new FormData(checklistForm);
+
+        // For demo: build a small summary
+        const summary = [];
+        for (let i = 1; i <= 10; i++) {
+          const text = formData.get(`q${i}_text`) || '';
+          const fileInput = document.getElementById(`q${i}_files`);
+          const count = fileInput ? fileInput.files.length : 0;
+          summary.push(`Q${i}: "${text}" (${count} files)`);
+        }
+        checklistStatus.textContent = 'Ready — ' + summary.join(' | ');
+
+        // To send, uncomment and configure your endpoint:
+        // fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData })
+        //  .then(res => res.json()).then(r => { ... }).catch(err => { ... });
+      });
+    }
+
+    /* Center photo input handling */
+    const centerPhotoInput = document.getElementById('centerPhotoInput');
+    const centerUploadName = document.getElementById('centerUploadName');
+    const centerPreviewImg = document.getElementById('centerPreviewImg');
+    const centerPreviewVid = document.getElementById('centerPreviewVid');
+
+    if (centerPhotoInput) {
+      centerPhotoInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        centerUploadName.textContent = file ? file.name : 'No file chosen';
+
+        // hide both previews first
+        if (centerPreviewImg) centerPreviewImg.style.display = 'none';
+        if (centerPreviewVid) centerPreviewVid.style.display = 'none';
+
+        if (!file) return;
+
+        if (file.size > CENTER_MAX_SIZE) {
+          // warn but don't block
+          const kb = Math.round(file.size / 1024);
+          alert(`Selected file is ${kb} KB — recommended max ${Math.round(CENTER_MAX_SIZE/1024)} KB.`);
+        }
+
+        const url = URL.createObjectURL(file);
+        if (file.type.startsWith('image/') && centerPreviewImg) {
+          centerPreviewImg.src = url;
+          centerPreviewImg.style.display = 'block';
+        } else if (file.type.startsWith('video/') && centerPreviewVid) {
+          centerPreviewVid.src = url;
+          centerPreviewVid.style.display = 'block';
+        } else if (centerPreviewImg) {
+          // fallback showing as thumbnail container
+          centerPreviewImg.src = '';
+          centerPreviewImg.style.display = 'none';
+        }
+      });
+    }
+
+    /* Registration form submit */
+    const regForm = document.getElementById('regForm');
+    const regStatus = document.getElementById('regStatus');
+    const regSubmitBtn = document.getElementById('regSubmitBtn');
+
+    if (regForm) {
+      regForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (regSubmitBtn) {
+          regSubmitBtn.disabled = true;
+          regSubmitBtn.textContent = 'Sending...';
+        }
+        if (regStatus) regStatus.textContent = '';
+
+        const formData = new FormData(regForm);
+
+        // Demo: basic validation example (phone length)
+        const phone = formData.get('mobile_number');
+        if (phone && phone.toString().trim().length < 7) {
+          if (regStatus) {
+            regStatus.textContent = 'Please enter a valid mobile number.';
+            regStatus.classList.add('error');
+          }
+          if (regSubmitBtn) {
+            regSubmitBtn.disabled = false;
+            regSubmitBtn.textContent = 'Submit Registration';
+          }
+          return;
+        }
+
+        try {
+          // To actually submit, uncomment and set your endpoint
+          // const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+          // const result = await res.json();
+
+          // Demo result:
+          const result = { success: true };
+
+          if (result && result.success) {
+            if (regStatus) {
+              regStatus.textContent = 'Registration submitted successfully!';
+              regStatus.classList.remove('error');
+              regStatus.classList.add('success');
+            }
+            regForm.reset();
+            if (centerUploadName) centerUploadName.textContent = 'No file chosen';
+            if (centerPreviewImg) centerPreviewImg.style.display = 'none';
+            if (centerPreviewVid) centerPreviewVid.style.display = 'none';
+          } else {
+            if (regStatus) {
+              regStatus.textContent = 'Failed to submit registration.';
+              regStatus.classList.remove('success');
+              regStatus.classList.add('error');
+            }
+          }
+        } catch (err) {
+          console.error(err);
+          if (regStatus) {
+            regStatus.textContent = 'Error during submission.';
+            regStatus.classList.remove('success');
+            regStatus.classList.add('error');
+          }
+        } finally {
+          if (regSubmitBtn) {
+            regSubmitBtn.disabled = false;
+            regSubmitBtn.textContent = 'Submit Registration';
+          }
+        }
+      });
+    }
+
+    /* Utility: clicking visible upload labels opens hidden inputs (delegation) */
+    document.addEventListener('click', (evt) => {
+      const el = evt.target.closest('.btn-upload, .file-btn');
+      if (!el) return;
+      const forAttr = el.getAttribute('for');
+      if (forAttr) {
+        const target = document.getElementById(forAttr);
+        if (target) target.click();
+      }
+    });
+  </script>
+</body>
+</html>
